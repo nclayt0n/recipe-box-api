@@ -27,14 +27,7 @@ const UsersService = {
     hashPassword(password) {
         return bcrypt.hash(password, 12)
     },
-    serializeUser(user) {
-        return {
-            id: user.id,
-            full_name: xss(user.full_name),
-            email: xss(user.email),
-            date_created: new Date(user.date_created)
-        }
-    },
+
     insertUser(db, newUser) {
         return db
             .insert(newUser)
@@ -42,6 +35,14 @@ const UsersService = {
             .returning('*')
             .then(([user]) => user)
 
+    },
+    serializeUser(user) {
+        return {
+            id: user.id,
+            full_name: xss(user.full_name),
+            email: xss(user.email),
+            date_created: new Date(user.date_created)
+        }
     },
 }
 module.exports = UsersService

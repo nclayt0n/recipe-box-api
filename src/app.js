@@ -8,20 +8,17 @@ const app = express()
 const morganOptions = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 const usersRouter = require('./users/users-router')
 const recipesRouter = require('./recipes/recipes-router')
-
+const foldersRouter = require('./folders/folders-router')
+const authRouter = require('./auth/auth-router')
 app.use(morgan(morganOptions))
 app.use(helmet())
 app.use(cors())
 
-app.use('api/users', usersRouter)
-app.use(recipesRouter)
-    // app.use('api/folders', foldersRouter)
-    // app.use('api/auth', authRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/recipes', recipesRouter)
+app.use('/api/folders', foldersRouter)
+app.use('api/auth', authRouter)
 
-
-app.get('/api', (req, res) => {
-    res.send('Hello, world!')
-})
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {

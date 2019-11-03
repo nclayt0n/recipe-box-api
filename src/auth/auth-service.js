@@ -2,10 +2,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 const AuthService = {
-    getUserWithUserName(db, user_name) {
-        console.log(user_name)
+    getUserWithUserName(db, email) {
+        console.log(email)
         return db('recipebox_users')
-            .where({ user_name })
+            .where({ email })
             .first()
     },
     comparePasswords(password, hash) {

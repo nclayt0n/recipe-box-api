@@ -31,7 +31,7 @@ const RecipesService = {
             .groupBy('rb.id', 'usr.id')
     },
     getById(db, id) {
-        return RecipeService.getAllRecipes(db)
+        return RecipesService.getAllRecipes(db)
             .where('rb.id', id)
             .first()
     },

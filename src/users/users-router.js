@@ -16,9 +16,9 @@ usersRouter
         const passwordError = UsersService.validatePassword(password)
         if (passwordError)
             return res.status(400).json({ error: passwordError })
-        UsersService.hasUserWithUserName(
+        UsersService.hasUserWithEmail(
                 req.app.get('db'),
-                user_name
+                email
             )
             .then(hasUserwithEmail => {
                 if (hasUserwithEmail)
@@ -27,6 +27,7 @@ usersRouter
                     .then(hashedPassword => {
                         const newUser = {
                             password: hashedPassword,
+                            email,
                             full_name,
                             date_created: 'now()',
                         }
