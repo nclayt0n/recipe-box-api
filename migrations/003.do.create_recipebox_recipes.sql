@@ -5,7 +5,7 @@ CREATE TABLE recipebox_recipes(
         date_modified TIMESTAMP,
         ingredients TEXT[] NOT NULL,
         instructions TEXT NOT NULL,
-        link MACADDR,
+        link text,
         created_by TEXT,
         note TEXT,
         folder_id INTEGER 

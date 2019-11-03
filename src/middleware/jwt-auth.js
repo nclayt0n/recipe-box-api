@@ -14,7 +14,7 @@ function requireAuth(req, res, next) {
 
         const payload = AuthService.verifyJWT(bearerToken)
 
-        AuthService.getUserWithUserName(
+        AuthService.getUserWithEmail(
                 req.app.get('db'),
                 payload.sub,
             )
