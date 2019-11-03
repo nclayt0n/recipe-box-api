@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS recipebox_users;

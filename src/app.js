@@ -5,12 +5,21 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const app = express()
-
 const morganOptions = (NODE_ENV === 'production') ? 'tiny' : 'dev';
+const usersRouter = require('./users/users-router')
+const recipesRouter = require('./recipes/recipes-router')
+
 app.use(morgan(morganOptions))
 app.use(helmet())
 app.use(cors())
-app.get('/', (req, res) => {
+
+app.use('api/users', usersRouter)
+app.use(recipesRouter)
+    // app.use('api/folders', foldersRouter)
+    // app.use('api/auth', authRouter)
+
+
+app.get('/api', (req, res) => {
     res.send('Hello, world!')
 })
 app.use(function errorHandler(error, req, res, next) {
