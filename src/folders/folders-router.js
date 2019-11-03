@@ -4,6 +4,7 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const foldersRouter = express.Router()
 foldersRouter
     .route('/')
+    // .all(requireAuth)
     .get((req, res, next) => {
         FoldersService.getAllFolders(req.app.get('db'))
             .then(folder => {
@@ -14,7 +15,7 @@ foldersRouter
 
 foldersRouter
     .route('/:folder_id')
-    .all(requireAuth)
+    // .all(requireAuth)
     .all(checkFolderExists)
     .get((req, res) => {
         res.json(FoldersService.serializeFolder(res.folder))

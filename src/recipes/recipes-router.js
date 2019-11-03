@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const recipesRouter = express.Router()
 recipesRouter
     .route('/')
-    .all(requireAuth)
+    // .all(requireAuth)
     .get((req, res, next) => {
         RecipesService.getAllRecipes(req.app.get('db'))
             .then(recipes => {
@@ -18,7 +18,7 @@ recipesRouter
 
 recipesRouter
     .route('/:recipe_id')
-    .all(requireAuth)
+    // .all(requireAuth)
     .all(checkRecipeExists)
     .get((req, res) => {
         res.json(RecipesService.serializeRecipe(res.recipe))
