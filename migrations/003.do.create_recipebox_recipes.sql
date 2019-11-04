@@ -8,7 +8,7 @@ CREATE TABLE recipebox_recipes(
         link text,
         created_by TEXT,
         note TEXT,
-       folder_id INTEGER
+        folder_id INTEGER 
             REFERENCES recipebox_folders(id) ON DELETE CASCADE NOT NULL,
         user_id INTEGER
             REFERENCES recipebox_users(id) ON DELETE CASCADE NOT NULL
