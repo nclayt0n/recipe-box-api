@@ -46,7 +46,7 @@ const RecipesService = {
         // only accepts arrays of objects, and we want to use a single
         // object.
         const recipeData = recipeTree.grow([recipe]).getData()[0]
-
+        console.log(recipeData)
         return {
             id: recipeData.id,
             name: xss(recipeData.name),
@@ -57,8 +57,23 @@ const RecipesService = {
             link: xss(recipeData.link),
             created_by: xss(recipeData.created_by),
             note: xss(recipeData.note),
+            folder_id: recipeData.folder_id,
             user: recipeData.user || {},
         }
+    },
+    insertRecipe(knex, newRecipe) {
+        return knex.insert(newRecipe)
+            .into('recipebox_recipes')
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    deleteRecipe(knex, id) {
+        return knex('recipebox_recipes').where({ id }).delete()
+    },
+    updateRecipe(knex, id, newRecipeField) {
+        return knex('recipebox_recipes').where({ id }).update(newRecipeField)
     },
 }
 const userFields = [

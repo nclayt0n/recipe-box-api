@@ -9,7 +9,7 @@ describe.skip('Auth endpoints', () => {
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: process.env.TEST_DATABASE_URL,
         })
         app.set('db', db)
     })
