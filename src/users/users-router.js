@@ -31,6 +31,7 @@ usersRouter
                             full_name,
                             date_created: 'now()',
                         }
+                        console.log(newUser)
                         return UsersService.insertUser(
                                 req.app.get('db'),
                                 newUser

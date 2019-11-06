@@ -17,7 +17,7 @@ app.use(cors())
 app.use('/api/users', usersRouter)
 app.use('/api/recipes', recipesRouter)
 app.use('/api/folders', foldersRouter)
-app.use('api/auth', authRouter)
+app.use('/api/auth/login', authRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
