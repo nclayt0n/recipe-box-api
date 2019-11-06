@@ -1,40 +1,42 @@
 const express = require('express')
 const RecipesService = require('./recipes-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const path = require('path')
 const jsonParser = express.json()
 const recipesRouter = express.Router()
 recipesRouter
-    .route('/')
+    .route('/api/recipes')
     // .all(requireAuth)
     .get((req, res, next) => {
         RecipesService.getAllRecipes(req.app.get('db'))
             .then(recipes => {
+                console.log(recipes)
                 res.json(RecipesService.serializeRecipes(
                     recipes))
             })
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
+        console.log(req.body)
+        const { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id } = req.body
 
-        const { name, date_created, ingredients, instructions, link, created_by, note, folder_id, } = req.body
-        const newRecipe = { name, date_created, ingredients, instructions, link, created_by, note, folder_id, }
-        for (const [key, value] of Object.entries(newRecipe)) {
-            if (value == null)
-                return res.status(400).json({
-                    error: { message: `Missing '${key}' in request body` }
-                });
-        }
+        const newRecipe = { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id }
+        for (const [key, value] of Object.entries(newRecipe))
+        // if (value == null)
+        //     return res.status(400).json({
+        //         error: { message: `Missing '${key}' in request body` }
+        //     });
+            console.log(newRecipe)
         RecipesService.insertRecipe(req.app.get('db'), newRecipe)
             .then(recipe => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${recipe.id}`))
-                    .json(serializeRecipe(recipe))
+                    .json(RecipesService.serializeRecipe(recipe))
             })
             .catch(next)
     })
-
 recipesRouter
-    .route('/:recipe_id')
+    .route('/api/recipe/:recipe_id')
     // .all(requireAuth)
     .all(checkRecipeExists)
     .get((req, res) => {

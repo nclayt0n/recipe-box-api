@@ -22,7 +22,14 @@ const FoldersService = {
             )
             .groupBy('f.id', 'usr.id')
     },
-
+    insertFolders(db, newFolder) {
+        return db.insert(newFolder)
+            .into('folders')
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
     getById(db, id) {
         return FoldersService.getAllFolders(db)
             .where('f.id', id)
@@ -30,24 +37,32 @@ const FoldersService = {
     },
 
     serializeFolders(folders) {
+
         return folders.map(this.serializeFolder)
     },
 
     serializeFolder(folder) {
+
         const folderTree = new Treeize()
 
         // Some light hackiness to allow for the fact that `treeize`
         // only accepts arrays of objects, and we want to use a single
         // object.
         const folderData = folderTree.grow([folder]).getData()[0]
-
+        console.log(folderData)
         return {
             id: folderData.id,
             name: xss(folderData.name),
             date_created: folderData.date_created,
             date_modified: folderData.date_modified,
-            user: folderData.user || {},
+            user_id: folderData.user || {},
         }
+    },
+    deleteFolder(db, id) {
+        return db('folders').where({ id }).delete()
+    },
+    updateFolder(db, id, newFolderFields) {
+        return db('folders').where({ id }).update(newFolderFields)
     },
 }
 

@@ -3,7 +3,7 @@ CREATE TABLE recipebox_recipes(
         name TEXT NOT NULL,
         date_created TIMESTAMP NOT NULL DEFAULT now(),
         date_modified TIMESTAMP,
-        ingredients TEXT[] NOT NULL,
+        ingredients TEXT NOT NULL,
         instructions TEXT NOT NULL,
         link text,
         created_by TEXT,
