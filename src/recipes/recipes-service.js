@@ -1,9 +1,19 @@
 const xss = require('xss')
 const Treeize = require('treeize')
-
+const atob=require('atob')
 const RecipesService = {
-    getAllRecipes(db) {
+    decodeAuthToken(header){
+        let token=header.authorization
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        let user_id = JSON.parse(jsonPayload).user_id;
 
+        return user_id
+    },
+    getAllRecipes(db,user_id) {
         return db.from('recipebox_recipes AS rb')
             .select(
                 'rb.id',
@@ -18,6 +28,7 @@ const RecipesService = {
                 'rb.folder_id',
                 ...userFields,
             )
+            .where({'rb.user_id':user_id})
             .leftJoin(
                 'recipebox_folders AS f',
                 'f.id',
@@ -30,6 +41,7 @@ const RecipesService = {
             )
             .groupBy('rb.id', 'usr.id')
     },
+    
     getById(db, id) {
         return RecipesService.getAllRecipes(db)
             .where('rb.id', id)
@@ -46,7 +58,6 @@ const RecipesService = {
         // only accepts arrays of objects, and we want to use a single
         // object.
         const recipeData = recipeTree.grow([recipe]).getData()[0]
-        console.log(recipeData)
         return {
             id: recipeData.id,
             name: xss(recipeData.name),

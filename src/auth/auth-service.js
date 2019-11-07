@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken')
 const config = require('../config')
 const AuthService = {
     getUserWithEmail(db, email) {
-        console.log(email)
         return db('recipebox_users')
             .where({ email })
             .first()
@@ -19,7 +18,6 @@ const AuthService = {
         })
     },
     verifyJWT(token) {
-        console.log('token', token)
         return jwt.verify(token, config.JWT_SECRET, {
             algorithms: ['HS256'],
         })
@@ -30,6 +28,7 @@ const AuthService = {
             .toString()
             .split(':')
     },
+
 }
 
 module.exports = AuthService

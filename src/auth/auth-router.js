@@ -6,7 +6,6 @@ const jsonBodyParser = express.json()
 authRouter
     .post('/', jsonBodyParser, (req, res, next) => {
         const { email, password } = req.body
-        console.log(req.body)
         const loginUser = { email, password }
         for (const [key, value] of Object.entries(loginUser))
             if (value == null)
@@ -32,6 +31,7 @@ authRouter
                         const payload = { user_id: dbUser.id }
                         res.send({
                             authToken: AuthService.createJwt(sub, payload),
+
                         })
                     })
             })

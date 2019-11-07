@@ -7,8 +7,11 @@ recipesRouter
     .route('/')
     // .all(requireAuth)
     .get((req, res, next) => {
-        RecipesService.getAllRecipes(req.app.get('db'))
+        console.log(req.headers)
+        let user_id = RecipesService.decodeAuthToken(req.headers)
+        RecipesService.getAllRecipes(req.app.get('db'), user_id)
             .then(recipes => {
+                console.log(recipes)
                 res.json(RecipesService.serializeRecipes(
                     recipes))
             })
@@ -16,8 +19,8 @@ recipesRouter
     })
     .post(jsonParser, (req, res, next) => {
 
-        const { name, date_created, ingredients, instructions, link, created_by, note, folder_id, } = req.body
-        const newRecipe = { name, date_created, ingredients, instructions, link, created_by, note, folder_id, }
+        const { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id } = req.body
+        const newRecipe = { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id }
         for (const [key, value] of Object.entries(newRecipe)) {
             if (value == null)
                 return res.status(400).json({
@@ -31,7 +34,9 @@ recipesRouter
                     .json(serializeRecipe(recipe))
             })
             .catch(next)
-    })
+
+    });
+
 
 recipesRouter
     .route('/:recipe_id')
