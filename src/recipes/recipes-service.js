@@ -1,9 +1,9 @@
 const xss = require('xss')
 const Treeize = require('treeize')
-const atob=require('atob')
+const atob = require('atob')
 const RecipesService = {
-    decodeAuthToken(header){
-        let token=header.authorization
+    decodeAuthToken(header) {
+        let token = header.authorization
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -13,7 +13,7 @@ const RecipesService = {
 
         return user_id
     },
-    getAllRecipes(db,user_id) {
+    getAllRecipes(db, user_id) {
         return db.from('recipebox_recipes AS rb')
             .select(
                 'rb.id',
@@ -28,7 +28,7 @@ const RecipesService = {
                 'rb.folder_id',
                 ...userFields,
             )
-            .where({'rb.user_id':user_id})
+            .where({ 'rb.user_id': user_id })
             .leftJoin(
                 'recipebox_folders AS f',
                 'f.id',
@@ -41,7 +41,7 @@ const RecipesService = {
             )
             .groupBy('rb.id', 'usr.id')
     },
-    
+
     getById(db, id) {
         return RecipesService.getAllRecipes(db)
             .where('rb.id', id)
@@ -72,19 +72,19 @@ const RecipesService = {
             user: recipeData.user || {},
         }
     },
-    insertRecipe(knex, newRecipe) {
-        return knex.insert(newRecipe)
+    insertRecipe(db, newRecipe) {
+        return db.insert(newRecipe)
             .into('recipebox_recipes')
             .returning('*')
             .then(rows => {
                 return rows[0]
             })
     },
-    deleteRecipe(knex, id) {
-        return knex('recipebox_recipes').where({ id }).delete()
+    deleteRecipe(db, id) {
+        return db('recipebox_recipes').where({ id }).delete()
     },
-    updateRecipe(knex, id, newRecipeField) {
-        return knex('recipebox_recipes').where({ id }).update(newRecipeField)
+    updateRecipe(db, id, newRecipeField) {
+        return db('recipebox_recipes').where({ id }).update(newRecipeField)
     },
 }
 const userFields = [

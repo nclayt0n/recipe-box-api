@@ -1,6 +1,7 @@
 const express = require('express')
 const RecipesService = require('./recipes-service')
 const { requireAuth } = require('../middleware/jwt-auth')
+const path = require('path')
 const jsonParser = express.json()
 const recipesRouter = express.Router()
 recipesRouter
@@ -31,7 +32,7 @@ recipesRouter
             .then(recipe => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${recipe.id}`))
-                    .json(serializeRecipe(recipe))
+                    .json(RecipesService.serializeRecipe(recipe))
             })
             .catch(next)
 
@@ -46,7 +47,7 @@ recipesRouter
         res.json(RecipesService.serializeRecipe(res.recipe))
     })
     .delete((req, res, next) => {
-        RecipesService.deleteRecipe(req.app.get('db'), req.params.recipe_id)
+        RecipesService.deleteRecipe(req.app.get('db'), req.params.id)
             .then(numRowsAffected => {
                 res.status(204).end()
             })
@@ -68,7 +69,7 @@ recipesRouter
 
 async function checkRecipeExists(req, res, next) {
     try {
-        const recipe = await RecipesService.getById(req.app.get('db'), req.params.recipe_id, )
+        const recipe = await RecipesService.getById(req.app.get('db'), req.params.id, )
         if (!recipe)
             return res.status(404).json({
                 error: 'Recipe does not exist'

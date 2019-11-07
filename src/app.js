@@ -16,16 +16,9 @@ app.use(cors())
 
 app.use('/api/users', usersRouter)
 app.use('/api/recipes', recipesRouter)
-app.use('/api/folders', foldersRouter)
+app.use(foldersRouter)
 app.use('/api/auth/login', authRouter)
-app.use(function userId(req, res, next) {
-    JWT.verify(req.cookies['token'], 'YOUR_SECRET', function(err, decodedToken) {
-        if (err) { /* handle token err */ } else {
-            req.userId = decodedToken.id; // Add to req object
-            next();
-        }
-    });
-});
+
 app.use(function errorHandler(error, req, res, next) {
     let response
     if (NODE_ENV === 'production') {
