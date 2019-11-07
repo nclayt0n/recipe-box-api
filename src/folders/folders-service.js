@@ -23,12 +23,12 @@ const FoldersService = {
                 ...userFields,
             )
             .where({ 'f.user_id': user_id })
-            .rightJoin(
+            .leftJoin(
                 'recipebox_recipes AS rb', 'rb.folder_id',
                 'f.id',
 
             )
-            .rightJoin(
+            .leftJoin(
                 'recipebox_users AS usr',
                 'f.user_id',
                 'usr.id',

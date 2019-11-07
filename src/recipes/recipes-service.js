@@ -81,6 +81,7 @@ const RecipesService = {
             })
     },
     deleteRecipe(db, id) {
+        console.log(id)
         return db('recipebox_recipes').where({ id }).delete()
     },
     updateRecipe(db, id, newRecipeField) {

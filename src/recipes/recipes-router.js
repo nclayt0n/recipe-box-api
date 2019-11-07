@@ -5,14 +5,12 @@ const path = require('path')
 const jsonParser = express.json()
 const recipesRouter = express.Router()
 recipesRouter
-    .route('/')
+    .route('/api/recipes')
     // .all(requireAuth)
     .get((req, res, next) => {
-        console.log(req.headers)
         let user_id = RecipesService.decodeAuthToken(req.headers)
         RecipesService.getAllRecipes(req.app.get('db'), user_id)
             .then(recipes => {
-                console.log(recipes)
                 res.json(RecipesService.serializeRecipes(
                     recipes))
             })
@@ -40,14 +38,14 @@ recipesRouter
 
 
 recipesRouter
-    .route('/:recipe_id')
+    .route('/api/recipe/:recipe_id')
     // .all(requireAuth)
     .all(checkRecipeExists)
     .get((req, res) => {
         res.json(RecipesService.serializeRecipe(res.recipe))
     })
     .delete((req, res, next) => {
-        RecipesService.deleteRecipe(req.app.get('db'), req.params.id)
+        RecipesService.deleteRecipe(req.app.get('db'), req.params.recipe_id)
             .then(numRowsAffected => {
                 res.status(204).end()
             })
@@ -69,7 +67,7 @@ recipesRouter
 
 async function checkRecipeExists(req, res, next) {
     try {
-        const recipe = await RecipesService.getById(req.app.get('db'), req.params.id, )
+        const recipe = await RecipesService.getById(req.app.get('db'), req.params.recipe_id, )
         if (!recipe)
             return res.status(404).json({
                 error: 'Recipe does not exist'

@@ -15,7 +15,7 @@ app.use(helmet())
 app.use(cors())
 
 app.use('/api/users', usersRouter)
-app.use('/api/recipes', recipesRouter)
+app.use(recipesRouter)
 app.use(foldersRouter)
 app.use('/api/auth/login', authRouter)
 

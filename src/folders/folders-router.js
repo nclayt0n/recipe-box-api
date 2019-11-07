@@ -36,14 +36,14 @@ foldersRouter
 foldersRouter
     .route('/api/folder/:folder_id')
     // .all(requireAuth)
-    .all(checkFolderExists)
+    // .all(checkFolderExists)
     .get((req, res) => {
 
         res.json(FoldersService.serializeFolder(res.folder))
     })
     .delete((req, res, next) => {
         console.log(req)
-        FoldersService.deleteFolder(req.app.get('db'), req.body.id)
+        FoldersService.deleteFolder(req.app.get('db'), req.params.folder_id)
             .then(numRowsAffected => {
                 res.status(204).end()
             })
@@ -55,7 +55,7 @@ async function checkFolderExists(req, res, next) {
     try {
         const folder = await FoldersService.getById(
             req.app.get('db'),
-            req.params.id
+            req.params.folder_id
         )
 
         if (!folder)
