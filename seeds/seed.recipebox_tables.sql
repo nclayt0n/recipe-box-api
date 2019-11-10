@@ -20,7 +20,7 @@ VALUES
 
   INSERT INTO recipebox_recipes(name,ingredients,instructions,link,created_by,note,user_id,folder_id)
   VALUES
-  ('ApplePie', ARRAY['{"name": "apple", "quantity": 1, "unit": "cup" }', '{ "name": "sugar", "quantity": 1, "unit": "cup" }', '{ "name": "crust", "quantity": 1, "unit": "package" }'],'preheat oven, mix ingredients, bake,enjoy',null,'Momma Rock','Easy as Pie',1,1),
-  ('PeachPie', ARRAY['{"name": "peach", "quantity": 1, "unit": "cup" }', '{ "name": "sugar", "quantity": 1, "unit": "cup" }', '{ "name": "crust", "quantity": 1, "unit": "package" }'],'preheat oven, mix ingredients, bake,enjoy',null,'Momma Clay','Easy as Pie',2,1);
+  ('ApplePie', '[{"name": "apple", "quantity": 1, "unit": "cup"},{"name": "cinnamon", "quantity": 3, "unit": "pinches"}]','preheat oven, mix ingredients, bake,enjoy',null,'Momma Rock','Easy as Pie',1,1),
+  ('PeachPie', '[{"name": "peach", "quantity": 1, "unit": "cup"}]','preheat oven, mix ingredients, bake,enjoy',null,'Momma Clay','Easy as Pie',2,1);
 
   COMMIT;

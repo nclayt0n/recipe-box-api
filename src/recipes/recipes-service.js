@@ -14,7 +14,8 @@ const RecipesService = {
         return user_id
     },
     getAllRecipes(db, user_id) {
-        return db.from('recipebox_recipes AS rb')
+        return db
+            .from('recipebox_recipes AS rb')
             .select(
                 'rb.id',
                 'rb.name',
@@ -42,8 +43,8 @@ const RecipesService = {
             .groupBy('rb.id', 'usr.id')
     },
 
-    getById(db, id) {
-        return RecipesService.getAllRecipes(db)
+    getById(db, id, userId) {
+        return RecipesService.getAllRecipes(db, userId)
             .where('rb.id', id)
             .first()
     },
@@ -58,12 +59,12 @@ const RecipesService = {
         // only accepts arrays of objects, and we want to use a single
         // object.
         const recipeData = recipeTree.grow([recipe]).getData()[0]
-        return {
+        let r = {
             id: recipeData.id,
             name: xss(recipeData.name),
             date_created: recipeData.date_created,
             date_modified: recipeData.date_modified,
-            ingredients: xss(recipeData.ingredients),
+            ingredients: JSON.parse(recipeData.ingredients),
             instructions: xss(recipeData.instructions),
             link: xss(recipeData.link),
             created_by: xss(recipeData.created_by),
@@ -71,8 +72,10 @@ const RecipesService = {
             folder_id: recipeData.folder_id,
             user: recipeData.user || {},
         }
+        return r
     },
     insertRecipe(db, newRecipe) {
+        newRecipe.ingredients = JSON.stringify(newRecipe.ingredients)
         return db.insert(newRecipe)
             .into('recipebox_recipes')
             .returning('*')
@@ -81,13 +84,14 @@ const RecipesService = {
             })
     },
     deleteRecipe(db, id) {
-        console.log(id)
         return db('recipebox_recipes').where({ id }).delete()
     },
     updateRecipe(db, id, newRecipeField) {
+        newRecipeField.ingredients = JSON.stringify(newRecipeField.ingredients)
         return db('recipebox_recipes').where({ id }).update(newRecipeField)
     },
 }
+
 const userFields = [
     'usr.id AS user:id',
     'usr.email AS user:email',

@@ -52,12 +52,10 @@ describe('Users Endpoints', function() {
                 })
                 it(`responds 400'Password must be less than 72 characters' when long password`, () => {
                     const userLongPassword = {
-                            email: 'test email',
-                            password: '*'.repeat(73),
-                            full_name: 'test full_name',
-                        }
-                        //console.log(userLongPassword)
-                        //console.log(userLongPassword.length)
+                        email: 'test email',
+                        password: '*'.repeat(73),
+                        full_name: 'test full_name',
+                    }
                     return supertest(app)
                         .post('/api/users')
                         .send(userLongPassword)

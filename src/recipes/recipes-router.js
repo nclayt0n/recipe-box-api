@@ -17,7 +17,6 @@ recipesRouter
             .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-
         const { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id } = req.body
         const newRecipe = { name, date_created, ingredients, instructions, link, created_by, note, folder_id, user_id }
         for (const [key, value] of Object.entries(newRecipe)) {
@@ -30,7 +29,7 @@ recipesRouter
             .then(recipe => {
                 res.status(201)
                     .location(path.posix.join(req.originalUrl, `/${recipe.id}`))
-                    .json(RecipesService.serializeRecipe(recipe))
+                    .json((recipe))
             })
             .catch(next)
 
@@ -42,6 +41,7 @@ recipesRouter
     // .all(requireAuth)
     .all(checkRecipeExists)
     .get((req, res) => {
+
         res.json(RecipesService.serializeRecipe(res.recipe))
     })
     .delete((req, res, next) => {
@@ -67,7 +67,8 @@ recipesRouter
 
 async function checkRecipeExists(req, res, next) {
     try {
-        const recipe = await RecipesService.getById(req.app.get('db'), req.params.recipe_id, )
+        let user_id = RecipesService.decodeAuthToken(req.headers)
+        const recipe = await RecipesService.getById(req.app.get('db'), req.params.recipe_id, user_id)
         if (!recipe)
             return res.status(404).json({
                 error: 'Recipe does not exist'
