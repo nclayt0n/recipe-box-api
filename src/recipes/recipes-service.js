@@ -87,6 +87,7 @@ const RecipesService = {
         return db('recipebox_recipes').where({ id }).delete()
     },
     updateRecipe(db, id, newRecipeField) {
+        id = parseInt(id)
         newRecipeField.ingredients = JSON.stringify(newRecipeField.ingredients)
         return db('recipebox_recipes').where({ id }).update(newRecipeField)
     },

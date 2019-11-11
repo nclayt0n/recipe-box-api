@@ -53,7 +53,7 @@ recipesRouter
     })
     .patch(jsonParser, (req, res, next) => {
         const { id, name, date_created, ingredients, instructions, link, created_by, note, folder_id, } = req.body
-        const recipeToUpdate = { id, name, date_created, ingredients, instructions, link, created_by, note, folder_id, }
+        const recipeToUpdate = { id, name, date_created, ingredients, instructions, link, created_by, note, folder_id }
         const numberOfValues = Object.values(recipeToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {
             return res.status(400).json({ error: { message: `Request body must contain name, instructions, and ingredients` } })
