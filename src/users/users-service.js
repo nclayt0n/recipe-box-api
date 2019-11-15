@@ -44,5 +44,8 @@ const UsersService = {
             date_created: new Date(user.date_created)
         }
     },
+    deleteUser(db, id) {
+        return db('recipebox_users').where({ id }).delete()
+    }
 }
 module.exports = UsersService

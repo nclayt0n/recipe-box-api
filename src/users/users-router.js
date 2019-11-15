@@ -45,4 +45,13 @@ usersRouter
             })
             .catch(next)
     })
+
+.delete('/:user_id', (req, res, next) => {
+    console.log(req)
+    UsersService.deleteUser(req.app.get('db'), req.params.user_id)
+        .then(numRowsAffected => {
+            res.status(204).end()
+        })
+        .catch(next)
+})
 module.exports = usersRouter
