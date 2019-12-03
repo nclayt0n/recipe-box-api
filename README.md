@@ -222,7 +222,7 @@ Code:204<br/>
         body: JSON.stringify({'id':id})
     };
         fetch(url,options)
-
+        
 
 ## `URL`
 /recipes
@@ -249,7 +249,7 @@ user: {id: 36, email: "testEmailFor@RecipeBox.com", full_name: "TestCredentials"
 }}
 
 ### Sample Call 
-   ` const options = {
+ `   const options = {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -257,11 +257,9 @@ user: {id: 36, email: "testEmailFor@RecipeBox.com", full_name: "TestCredentials"
             },
         };
         Promise.all([
-                fetch(`${config.API_ENDPOINT}/recipes`,
+                fetch(config.API_ENDPOINT/recipes,
           options)
             ])`
-
-
 
 ## `URL`
 /recipes
@@ -291,18 +289,16 @@ code:400<br/>
 Content:{error: 'Missing key in request body'}
 
 ### Sample Call 
-  `const url=`${config.API_ENDPOINT}/recipes`;
+  `const url=${config.API_ENDPOINT}/recipes;
         const options={
             method:'POST',
             headers:{
                 'content-type':'application/json',
-                'Authorization': `Bearer ${TokenService.getAuthToken()}`,
+                'Authorization': 'Bearer authToken',
             },
             body: JSON.stringify({'name','date_created','folder_id','instructions',ingredients,note,link,created_by,user_id})
         };
         fetch(url,options)`
-
-
 
 ## `URL`
 /recipes/:id
@@ -322,17 +318,17 @@ code:400<br/>
 Content:{error: { message: 'Request body must contain name, instructions, and ingredients'}}
 
 ### Sample Call 
- `const url=`${config.API_ENDPOINT}/recipe/${updatedRecipe.id}`;
+  `const url=config.API_ENDPOINT/recipe/updatedRecipe.id;
             const options={
                 method:'PATCH',
                 headers:{
               'content-type':'application/json',
-              'Authorization': `Bearer ${TokenService.getAuthToken()}`,
+              'Authorization': 'Bearer authToken',
             },
             body: JSON.stringify({
                 id,
                 name,
-                date_created
+                date_created,
                 date_modified,
                 folder_id,
                 ingredients,
@@ -358,13 +354,14 @@ DELETE
 Code:204<br/>
 
 ### Sample Call 
- `const url=`${config.API_ENDPOINT}/recipe/${recipe.id}`;
+`const url=config.API_ENDPOINT/recipe/recipe.id;
         const options={
             method:'DELETE',
             headers:{
           'content-type':'application/json',
-          'Authorization': `Bearer ${TokenService.getAuthToken()}`,
-        }
+          'Authorization': 'Bearer authToken',
+        },
+        body: JSON.stringify({id})
     };
         fetch(url,options)`
 
