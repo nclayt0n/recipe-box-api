@@ -291,15 +291,16 @@ code:400<br/>
 Content:{error: 'Missing key in request body'}
 
 ### Sample Call 
-  const url=${config.API_ENDPOINT}/recipes;
+  const url=`${config.API_ENDPOINT}/recipes`;
         const options={
             method:'POST',
             headers:{
                 'content-type':'application/json',
-                'Authorization': 'Bearer authToken',
+                'Authorization': `Bearer ${TokenService.getAuthToken()}`,
             },
             body: JSON.stringify({'name','date_created','folder_id','instructions',ingredients,note,link,created_by,user_id})
         };
+    
         fetch(url,options)
 
 
@@ -322,17 +323,17 @@ code:400<br/>
 Content:{error: { message: 'Request body must contain name, instructions, and ingredients'}}
 
 ### Sample Call 
-  const url=config.API_ENDPOINT/recipe/updatedRecipe.id;
+ const url=`${config.API_ENDPOINT}/recipe/${updatedRecipe.id}`;
             const options={
                 method:'PATCH',
                 headers:{
               'content-type':'application/json',
-              'Authorization': 'Bearer authToken',
+              'Authorization': `Bearer ${TokenService.getAuthToken()}`,
             },
             body: JSON.stringify({
                 id,
                 name,
-                date_created,
+                date_created
                 date_modified,
                 folder_id,
                 ingredients,
@@ -342,7 +343,6 @@ Content:{error: { message: 'Request body must contain name, instructions, and in
                 note,user_id})
         };
             fetch(url,options)
-
 
         
 ## `URL`
@@ -359,14 +359,13 @@ DELETE
 Code:204<br/>
 
 ### Sample Call 
-const url=config.API_ENDPOINT}/recipe/recipe.id;
+ const url=`${config.API_ENDPOINT}/recipe/${recipe.id}`;
         const options={
             method:'DELETE',
             headers:{
           'content-type':'application/json',
-          'Authorization': 'Bearer authToken',
-        },
-        body: JSON.stringify({id})
+          'Authorization': `Bearer ${TokenService.getAuthToken()}`,
+        }
     };
         fetch(url,options)
 
