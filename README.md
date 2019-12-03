@@ -118,6 +118,7 @@ id: 36}
 }}
 
 ### Sample Call 
+```
   const options = {
             method: 'GET',
             headers: {
@@ -134,6 +135,7 @@ id: 36}
                     return foldersRes.json().then(e => Promise.reject(e));
                 return Promise.all([foldersRes.json()]);
             })
+```
           
 ## `URL`
 /folders
