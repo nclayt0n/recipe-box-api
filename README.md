@@ -249,7 +249,7 @@ user: {id: 36, email: "testEmailFor@RecipeBox.com", full_name: "TestCredentials"
 }}
 
 ### Sample Call 
- `   const options = {
+ ```   const options = {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -259,7 +259,8 @@ user: {id: 36, email: "testEmailFor@RecipeBox.com", full_name: "TestCredentials"
         Promise.all([
                 fetch(config.API_ENDPOINT/recipes,
           options)
-            ])`
+            ])
+```
 
 ## `URL`
 /recipes
@@ -289,7 +290,7 @@ code:400<br/>
 Content:{error: 'Missing key in request body'}
 
 ### Sample Call 
-  `const url=${config.API_ENDPOINT}/recipes;
+```const url=${config.API_ENDPOINT}/recipes;
         const options={
             method:'POST',
             headers:{
@@ -298,7 +299,8 @@ Content:{error: 'Missing key in request body'}
             },
             body: JSON.stringify({'name','date_created','folder_id','instructions',ingredients,note,link,created_by,user_id})
         };
-        fetch(url,options)`
+        fetch(url,options)
+```
 
 ## `URL`
 /recipes/:id
@@ -318,7 +320,7 @@ code:400<br/>
 Content:{error: { message: 'Request body must contain name, instructions, and ingredients'}}
 
 ### Sample Call 
-  `const url=config.API_ENDPOINT/recipe/updatedRecipe.id;
+```const url=config.API_ENDPOINT/recipe/updatedRecipe.id;
             const options={
                 method:'PATCH',
                 headers:{
@@ -337,7 +339,8 @@ Content:{error: { message: 'Request body must contain name, instructions, and in
                 created_by,
                 note,user_id})
         };
-            fetch(url,options)`
+            fetch(url,options)
+```
 
         
 ## `URL`
@@ -354,7 +357,7 @@ DELETE
 Code:204<br/>
 
 ### Sample Call 
-`const url=config.API_ENDPOINT/recipe/recipe.id;
+```const url=config.API_ENDPOINT/recipe/recipe.id;
         const options={
             method:'DELETE',
             headers:{
@@ -363,7 +366,8 @@ Code:204<br/>
         },
         body: JSON.stringify({id})
     };
-        fetch(url,options)`
+        fetch(url,options)
+```
 
 
         
