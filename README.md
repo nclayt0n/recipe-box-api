@@ -1,5 +1,7 @@
 # Recipe Box API
 
+Below are a list of endpoints, their method, paramaters to include if required,success response, error response, and a sample call. 
+
 ## `URL`
 /users
 
