@@ -13,11 +13,11 @@ POST
  email=text, password=text, full_name=text
 
 ## Success Response
-Code:201
+Code:201<br/>
 content: {id:1,full_name:'Test User',email:'testUser@test.com',password:'P@ssw0rd'}
 
 ## Error Response
-code:400
+code:400<br/>
 If user tries to create an account with an email already in use. Content:{error:'Email already in use' will be sent'}
 If user id missing a field. Content:{error: Missin field in request body}
 
