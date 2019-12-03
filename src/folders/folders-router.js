@@ -11,7 +11,7 @@ foldersRouter
         let user_id = FoldersService.decodeAuthToken(req.headers)
         FoldersService.getAllFolders(req.app.get('db'), user_id)
             .then(folder => {
-                res.json(FoldersService.serializeFolders(folder))
+                res.status(200).json(FoldersService.serializeFolders(folder))
             })
             .catch(next)
     })
@@ -38,7 +38,6 @@ foldersRouter
     // .all(requireAuth)
     // .all(checkFolderExists)
     .get((req, res) => {
-
         res.json(FoldersService.serializeFolder(res.folder))
     })
     .patch(jsonParser, (req, res, next) => {

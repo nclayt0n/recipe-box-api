@@ -6,12 +6,11 @@ const jsonParser = express.json()
 const recipesRouter = express.Router()
 recipesRouter
     .route('/api/recipes')
-    // .all(requireAuth)
     .get((req, res, next) => {
         let user_id = RecipesService.decodeAuthToken(req.headers)
         RecipesService.getAllRecipes(req.app.get('db'), user_id)
             .then(recipes => {
-                res.json(RecipesService.serializeRecipes(
+                res.status(200).json(RecipesService.serializeRecipes(
                     recipes))
             })
             .catch(next)
@@ -38,7 +37,6 @@ recipesRouter
 
 recipesRouter
     .route('/api/recipe/:recipe_id')
-    // .all(requireAuth)
     .all(checkRecipeExists)
     .get((req, res) => {
 
