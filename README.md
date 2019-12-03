@@ -223,6 +223,7 @@ Code:204<br/>
     };
         fetch(url,options)
 
+
 ## `URL`
 /recipes
 
@@ -259,6 +260,8 @@ user: {id: 36, email: "testEmailFor@RecipeBox.com", full_name: "TestCredentials"
                 fetch(`${config.API_ENDPOINT}/recipes`,
           options)
             ])
+
+
 
 ## `URL`
 /recipes
@@ -299,6 +302,8 @@ Content:{error: 'Missing key in request body'}
         };
         fetch(url,options)
 
+
+
 ## `URL`
 /recipes/:id
 
@@ -337,6 +342,8 @@ Content:{error: { message: 'Request body must contain name, instructions, and in
                 note,user_id})
         };
             fetch(url,options)
+
+
         
 ## `URL`
 /recipes/:id
@@ -362,4 +369,6 @@ const url=config.API_ENDPOINT}/recipe/recipe.id;
         body: JSON.stringify({id})
     };
         fetch(url,options)
+
+
         
