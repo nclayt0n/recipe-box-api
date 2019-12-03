@@ -1,4 +1,4 @@
-## Recipe Box API
+# Recipe Box API
 
 This is a boilerplate project used for starting new projects!
 
@@ -9,7 +9,7 @@ This is a boilerplate project used for starting new projects!
 POST
 
 ## URL Params
-# Required: email=text, password=text, full_name=text
+### Required: email=text, password=text, full_name=text
 
 ## Success Response
 Code:201
