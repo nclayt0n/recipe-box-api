@@ -1,28 +1,32 @@
-const express = require('express')
-const path = require('path')
-const UsersService = require('./users-service')
-const usersRouter = express.Router()
-const jsonBodyParser = express.json()
+const express = require('express');
+const path = require('path');
+const UsersService = require('./users-service');
+const usersRouter = express.Router();
+const jsonBodyParser = express.json();
 
 usersRouter
     .post('/', jsonBodyParser, (req, res, next) => {
 
-        const { password, email, full_name } = req.body
-        for (const field of['full_name', 'email', 'password'])
-            if (!req.body[field])
+        const { password, email, full_name } = req.body;
+        for (const field of['full_name', 'email', 'password']) {
+            if (!req.body[field]) {
                 return res.status(400).json({
                     error: `Missing '${field}' in request body`
-                })
-        const passwordError = UsersService.validatePassword(password)
-        if (passwordError)
-            return res.status(400).json({ error: passwordError })
+                });
+            }
+        }
+        const passwordError = UsersService.validatePassword(password);
+        if (passwordError) {
+            return res.status(400).json({ error: passwordError });
+        }
         UsersService.hasUserWithEmail(
                 req.app.get('db'),
                 email
             )
             .then(hasUserwithEmail => {
-                if (hasUserwithEmail)
-                    return res.status(400).json({ error: `Email is already in use` })
+                if (hasUserwithEmail) {
+                    return res.status(400).json({ error: `Email is already in use` });
+                }
                 return UsersService.hashPassword(password)
                     .then(hashedPassword => {
                         const newUser = {
@@ -30,7 +34,7 @@ usersRouter
                             email,
                             full_name,
                             date_created: 'now()',
-                        }
+                        };
 
                         return UsersService.insertUser(
                                 req.app.get('db'),
@@ -39,18 +43,18 @@ usersRouter
                             .then(user => {
                                 res.status(201)
                                     .location(path.posix.join(req.originalUrl, `${user.id}`))
-                                    .json(UsersService.serializeUser(user))
-                            })
-                    })
+                                    .json(UsersService.serializeUser(user));
+                            });
+                    });
             })
-            .catch(next)
+            .catch(next);
     })
 
 .delete('/:user_id', (req, res, next) => {
     UsersService.deleteUser(req.app.get('db'), req.params.user_id)
         .then(numRowsAffected => {
-            res.status(204).end()
+            res.status(204).end();
         })
-        .catch(next)
-})
-module.exports = usersRouter
+        .catch(next);
+});
+module.exports = usersRouter;

@@ -1,34 +1,36 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const config = require('../config')
+const Buffer = require('buffer');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
+
 const AuthService = {
     getUserWithEmail(db, email) {
         return db('recipebox_users')
             .where({ email })
-            .first()
+            .first();
     },
     comparePasswords(password, hash) {
-        return bcrypt.compare(password, hash)
+        return bcrypt.compare(password, hash);
     },
     createJwt(subject, payload) {
         return jwt.sign(payload, config.JWT_SECRET, {
             subject,
             expiresIn: config.JWT_EXPIRY,
             algorithm: 'HS256',
-        })
+        });
     },
     verifyJWT(token) {
         return jwt.verify(token, config.JWT_SECRET, {
             algorithms: ['HS256'],
-        })
+        });
     },
     parseBasicToken(token) {
         return Buffer
             .from(token, 'base64')
             .toString()
-            .split(':')
+            .split(':');
     },
 
-}
+};
 
-module.exports = AuthService
+module.exports = AuthService;

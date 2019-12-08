@@ -1,5 +1,5 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 function makeUsersArray() {
     return [{
@@ -30,7 +30,7 @@ function makeUsersArray() {
             password: 'password',
             date_created: '2029-01-22T16:28:32.615Z',
         },
-    ]
+    ];
 }
 
 function makeRecipesArray(users, folders) {
@@ -81,7 +81,7 @@ function makeRecipesArray(users, folders) {
             "note": "enjoy",
             user_id: users[1].id,
         }
-    ]
+    ];
 }
 
 function makeFoldersArray(users) {
@@ -114,7 +114,7 @@ function makeFoldersArray(users) {
 
 function makeExpectedRecipe(users, recipe, folders = []) {
     const user = users
-        .find(user => user.id === recipe.user_id)
+        .find(user => user.id === recipe.user_id);
 
     return {
         id: recipe.id,
@@ -127,28 +127,28 @@ function makeExpectedRecipe(users, recipe, folders = []) {
             full_name: user.full_name,
             date_created: user.date_created,
         },
-    }
+    };
 }
 
 
 function makeExpectedFolder(users, folderId, folders) {
     const expectedFolders = folders
-        .filter(folder => folder.id === folderId)
+        .filter(folder => folder.id === folderId);
 
     return expectedFolders.map(folder => {
-        const folderUser = users.find(user => user.id === folder.user_id)
+        const folderUser = users.find(user => user.id === folder.user_id);
         return {
             id: folder.id,
             name: folder.name,
-            date_created: review.date_created,
+            date_created: folder.date_created,
             user: {
                 id: folderUser.id,
                 email: folderUser.email,
                 full_name: folderUser.full_name,
                 date_created: folderUser.date_created,
             }
-        }
-    })
+        };
+    });
 }
 
 function makeMaliciousRecipe(user) {
@@ -161,25 +161,25 @@ function makeMaliciousRecipe(user) {
         instructions: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
         ingredients: [{ name: 'bad apple' }],
         folder_id: 1
-    }
+    };
     const expectedRecipe = {
         ...makeExpectedRecipe([user], maliciousRecipe),
         name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
         instuctions: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
         ingredients: [{ name: 'bad apple' }],
         folder_id: 1
-    }
+    };
     return {
         maliciousRecipe,
         expectedRecipe,
-    }
+    };
 }
 
 function makeRecipeFixtures() {
-    const testUsers = makeUsersArray()
-    const testFolders = makeFoldersArray(testUsers)
-    const testRecipes = makeRecipesArray(testUsers, testFolders)
-    return { testUsers, testRecipes, testFolders }
+    const testUsers = makeUsersArray();
+    const testFolders = makeFoldersArray(testUsers);
+    const testRecipes = makeRecipesArray(testUsers, testFolders);
+    return { testUsers, testRecipes, testFolders };
 }
 
 function cleanTables(db) {
@@ -189,32 +189,32 @@ function cleanTables(db) {
       recipebox_folders,
       recipebox_users
       RESTART IDENTITY CASCADE`
-    )
+    );
 }
 
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
         ...user,
         password: bcrypt.hashSync(user.password, 1)
-    }))
+    }));
     return db.into('recipebox_users').insert(preppedUsers)
         .then(() =>
             //update the auto sequence to stay in sync
             db.raw(
                 `SELECT setval('recipebox_users_id_seq',?)`, [users[users.length - 1].id],
-            ))
+            ));
 }
 
 function seedRecipesTables(db, users, recipes, folders = []) {
     //use a transaction to group the queries and auto rollback on any failure
 
     return db.transaction(async trx => {
-        await seedUsers(trx, users)
-        await trx.into('recipebox_recipes').insert(recipes)
+        await seedUsers(trx, users);
+        await trx.into('recipebox_recipes').insert(recipes);
         await trx.raw(
             `SELECT setval('recipebox_recipes_id_seq',?)`, [recipes[recipes.length - 1].id]
-        )
-    })
+        );
+    });
 }
 
 function seedMaliciousRecipe(db, user, recipe) {
@@ -223,15 +223,15 @@ function seedMaliciousRecipe(db, user, recipe) {
             db
             .into('recipebox_recipes')
             .insert([recipe])
-        )
+        );
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
         subject: user.email,
         algorithm: 'HS256',
-    })
-    return `Bearer ${token}`
+    });
+    return `Bearer ${token}`;
 }
 
 module.exports = {
@@ -246,4 +246,4 @@ module.exports = {
     seedRecipesTables,
     seedMaliciousRecipe,
     seedUsers,
-}
+};

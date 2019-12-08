@@ -1,10 +1,10 @@
-const xss = require('xss')
-const Treeize = require('treeize')
-const atob = require('atob')
+const xss = require('xss');
+const Treeize = require('treeize');
+const atob = require('atob');
 
 const FoldersService = {
     decodeAuthToken(header) {
-        let token = header.authorization
+        let token = header.authorization;
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -12,7 +12,7 @@ const FoldersService = {
         }).join(''));
         let user_id = JSON.parse(jsonPayload).user_id;
 
-        return user_id
+        return user_id;
     },
     getAllFolders(db, user_id) {
         return db
@@ -58,21 +58,21 @@ const FoldersService = {
             id: folderData.id,
             name: xss(folderData.name),
             user: folderData.user || {},
-        }
+        };
     },
     insertFolder(db, newFolder) {
         return db.insert(newFolder)
             .into('recipebox_folders')
             .returning('*')
             .then(rows => {
-                return rows[0]
-            })
+                return rows[0];
+            });
     },
     deleteFolder(db, id) {
-        return db('recipebox_folders').where({ id }).delete()
+        return db('recipebox_folders').where({ id }).delete();
     },
     updateFolder(db, id, newFolderFields) {
-        return db('recipebox_folders').where({ id }).update(newFolderFields)
+        return db('recipebox_folders').where({ id }).update(newFolderFields);
     },
 }
 const recipefields = [
@@ -95,4 +95,4 @@ const userFields = [
     'usr.date_modified AS user:date_modified',
 ]
 
-module.exports = FoldersService
+module.exports = FoldersService;

@@ -1,9 +1,9 @@
-const xss = require('xss')
-const Treeize = require('treeize')
-const atob = require('atob')
+const xss = require('xss');
+const Treeize = require('treeize');
+const atob = require('atob');
 const RecipesService = {
     decodeAuthToken(header) {
-        let token = header.authorization
+        let token = header.authorization;
         let base64Url = token.split('.')[1];
         let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -11,7 +11,7 @@ const RecipesService = {
         }).join(''));
         let user_id = JSON.parse(jsonPayload).user_id;
 
-        return user_id
+        return user_id;
     },
     getAllRecipes(db, user_id) {
         return db
@@ -40,20 +40,20 @@ const RecipesService = {
                 'rb.user_id',
                 'usr.id',
             )
-            .groupBy('rb.id', 'usr.id')
+            .groupBy('rb.id', 'usr.id');
     },
 
     getById(db, id, userId) {
         return RecipesService.getAllRecipes(db, userId)
             .where('rb.id', id)
-            .first()
+            .first();
     },
     serializeRecipes(recipes) {
-        return recipes.map(this.serializeRecipe)
+        return recipes.map(this.serializeRecipe);
     },
 
     serializeRecipe(recipe) {
-        const recipeTree = new Treeize()
+        const recipeTree = new Treeize();
 
         // Some light hackiness to allow for the fact that `treeize`
         // only accepts arrays of objects, and we want to use a single
@@ -71,27 +71,27 @@ const RecipesService = {
             note: xss(recipeData.note),
             folder_id: recipeData.folder_id,
             user: recipeData.user || {},
-        }
-        return r
+        };
+        return r;
     },
     insertRecipe(db, newRecipe) {
-        newRecipe.ingredients = JSON.stringify(newRecipe.ingredients)
+        newRecipe.ingredients = JSON.stringify(newRecipe.ingredients);
         return db.insert(newRecipe)
             .into('recipebox_recipes')
             .returning('*')
             .then(rows => {
-                return rows[0]
-            })
+                return rows[0];
+            });
     },
     deleteRecipe(db, id) {
-        return db('recipebox_recipes').where({ id }).delete()
+        return db('recipebox_recipes').where({ id }).delete();
     },
     updateRecipe(db, id, newRecipeField) {
-        id = parseInt(id)
-        newRecipeField.ingredients = JSON.stringify(newRecipeField.ingredients)
-        return db('recipebox_recipes').where({ id }).update(newRecipeField)
+        id = parseInt(id);
+        newRecipeField.ingredients = JSON.stringify(newRecipeField.ingredients);
+        return db('recipebox_recipes').where({ id }).update(newRecipeField);
     },
-}
+};
 
 const userFields = [
     'usr.id AS user:id',
@@ -99,6 +99,6 @@ const userFields = [
     'usr.full_name AS user:full_name',
     'usr.date_created AS user:date_created',
     'usr.date_modified AS user:date_modified',
-]
+];
 
-module.exports = RecipesService
+module.exports = RecipesService;
