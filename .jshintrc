@@ -2,8 +2,12 @@
     "curly": true,
     "eqeqeq": true,
     "undef": true,
+    "strict": "implied",
+    "devel": true,
+    "node": true,
     "globals": {
         "jQuery": true
     },
-    "esversion": 9
+    "esversion": 9,
+    "moz": true
 }

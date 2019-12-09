@@ -67,7 +67,7 @@ function makeRecipesArray(users, folders) {
             "instructions": "Corporis accusamus placeat quas non voluptas. Harum fugit molestias qui. Velit ex animi reiciendis quasi. Suscipit totam delectus ut voluptas aut qui rerum. Non veniam eius molestiae rerum quam.\n \rUnde qui aperiam praesentium alias. Aut temporibus id quidem recusandae voluptatem ut eum. Consequatur asperiores et in quisquam corporis maxime dolorem soluta. Et officiis id est quia sunt qui iste reiciendis saepe. Ut aut doloribus minus non nisi vel corporis. Veritatis mollitia et molestias voluptas neque aspernatur reprehenderit..",
             "link": "http://www.notArealSite.com",
             "created_by": "Mom",
-            user_id: users[1].id,
+            user_id: users[0].id,
         },
         {
             "id": 4,
@@ -79,7 +79,7 @@ function makeRecipesArray(users, folders) {
             "link": "http://www.notArealSite.com",
             "created_by": "Coolio",
             "note": "enjoy",
-            user_id: users[1].id,
+            user_id: users[0].id,
         }
     ];
 }
@@ -94,19 +94,19 @@ function makeFoldersArray(users) {
         {
             id: 2,
             name: 'Second Folder',
-            user_id: users[1].id,
+            user_id: users[0].id,
             date_created: '2029-01-22T16:28:32.615Z',
         },
         {
             id: 3,
             name: 'Third Folder',
-            user_id: users[2].id,
+            user_id: users[0].id,
             date_created: '2029-01-22T16:28:32.615Z',
         },
         {
             id: 4,
             name: 'Fourth Folder',
-            user_id: users[3].id,
+            user_id: users[0].id,
             date_created: '2029-01-22T16:28:32.615Z',
         }
     ];
@@ -185,10 +185,10 @@ function makeRecipeFixtures() {
 function cleanTables(db) {
     return db.raw(
         `TRUNCATE
-      recipebox_recipes,
-      recipebox_folders,
-      recipebox_users
-      RESTART IDENTITY CASCADE`
+        recipebox_recipes,
+        recipebox_folders,
+        recipebox_users
+        RESTART IDENTITY CASCADE`
     );
 }
 
@@ -237,6 +237,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 module.exports = {
     makeUsersArray,
     makeRecipesArray,
+    makeExpectedRecipe,
     makeExpectedFolder,
     makeMaliciousRecipe,
     makeFoldersArray,
