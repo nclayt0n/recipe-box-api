@@ -30,7 +30,7 @@ function makeRecipesArray(users, folders) {
     return [{
             "name": "Apple Pie",
             "folder_id": 1,
-            "ingredients": '"[{ name: "peach", quantity: 1, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]"',
+            "ingredients": '[{ name: "peach", quantity: 1, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]',
             "instructions": "Corporis accusamus placeat quas non voluptas. Harum fugit molestias qui. Velit ex animi reiciendis quasi. Suscipit totam delectus ut voluptas aut qui rerum. Non veniam eius molestiae rerum quam.",
             "link": "http://www.notArealSite.com",
             "created_by": "Oprah",
@@ -40,7 +40,7 @@ function makeRecipesArray(users, folders) {
         {
             "name": "Pumpkin Pie",
             "folder_id": 1,
-            "ingredients": '"[{ name: "pumpkin", quantity: 2, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]"',
+            "ingredients": '[{ name: "pumpkin", quantity: 2, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]',
             "instructions": "Corporis accusamus placeat quas non voluptas. Harum fugit molestias qui. Velit ex animi reiciendis quasi. Suscipit totam delectus ut voluptas aut qui rerum. Non veniam eius molestiae rerum quam.",
             "link": "http://www.notArealSite.com",
             "created_by": "Barb",
@@ -50,7 +50,7 @@ function makeRecipesArray(users, folders) {
         {
             "name": "Peach Pie",
             "folder_id": 1,
-            "ingredients": '"[{ name: "peach", quantity: 1, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]"',
+            "ingredients": '[{ name: "peach", quantity: 1, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]',
             "instructions": "Corporis accusamus placeat quas non voluptas. Harum fugit molestias qui. Velit ex animi reiciendis quasi. Suscipit totam delectus ut voluptas aut qui rerum. Non veniam eius molestiae rerum quam.",
             "link": "http://www.notArealSite.com",
             "created_by": "Mom",
@@ -59,7 +59,7 @@ function makeRecipesArray(users, folders) {
         {
             "name": "Sweet Potato Pie",
             "folder_id": 1,
-            "ingredients": '"[{ name: "sweet potatoes", quantity: 3, unit: "cup" }, { name: "sugar", quantity: 1.5, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]"',
+            "ingredients": '[{ name: "sweet potatoes", quantity: 3, unit: "cup" }, { name: "sugar", quantity: 1.5, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]',
             "instructions": "Corporis accusamus placeat quas non voluptas. Harum fugit molestias qui. Velit ex animi reiciendis quasi. Suscipit totam delectus ut voluptas aut qui rerum. Non veniam eius molestiae rerum quam.",
             "link": "http://www.notArealSite.com",
             "created_by": "Coolio",
@@ -139,7 +139,7 @@ function makeExpectedFolder(users, folderId, folders) {
 function makeRecipeFixtures() {
     const testUsers = makeUsersArray();
     const testFolders = makeFoldersArray(testUsers);
-    const testRecipes = makeRecipesArray(testUsers, testFolders);
+    const testRecipes = makeRecipesArray(testUsers, testFolders).map(recipe => { JSON.stringify(recipe.ingredients); });
     return { testUsers, testRecipes, testFolders };
 }
 
