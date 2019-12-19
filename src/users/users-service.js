@@ -42,10 +42,10 @@ const UsersService = {
             full_name: xss(user.full_name),
             email: xss(user.email),
             date_created: new Date(user.date_created)
-        }
+        };
     },
     deleteUser(db, id) {
         return db('recipebox_users').where({ id }).delete();
     }
-}
+};
 module.exports = UsersService;

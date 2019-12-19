@@ -49,6 +49,7 @@ const RecipesService = {
             .first();
     },
     serializeRecipes(recipes) {
+
         return recipes.map(this.serializeRecipe);
     },
 
@@ -58,7 +59,7 @@ const RecipesService = {
         // Some light hackiness to allow for the fact that `treeize`
         // only accepts arrays of objects, and we want to use a single
         // object.
-        const recipeData = recipeTree.grow([recipe]).getData()[0]
+        const recipeData = recipeTree.grow([recipe]).getData()[0];
         let r = {
             id: recipeData.id,
             name: xss(recipeData.name),

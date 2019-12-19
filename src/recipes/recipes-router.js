@@ -7,9 +7,7 @@ const recipesRouter = express.Router();
 recipesRouter
     .route('/api/recipes')
     .get((req, res, next) => {
-        console.log(req.headers)
         let user_id = RecipesService.decodeAuthToken(req.headers);
-        console.log(req.headers)
         RecipesService.getAllRecipes(req.app.get('db'), user_id)
             .then(recipes => {
                 res.status(200).json(RecipesService.serializeRecipes(
