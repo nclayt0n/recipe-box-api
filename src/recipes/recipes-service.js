@@ -44,18 +44,17 @@ const RecipesService = {
     },
 
     getById(db, id, userId) {
+
         return RecipesService.getAllRecipes(db, userId)
             .where('rb.id', id)
             .first();
     },
     serializeRecipes(recipes) {
-
         return recipes.map(this.serializeRecipe);
     },
 
     serializeRecipe(recipe) {
         const recipeTree = new Treeize();
-
         // Some light hackiness to allow for the fact that `treeize`
         // only accepts arrays of objects, and we want to use a single
         // object.

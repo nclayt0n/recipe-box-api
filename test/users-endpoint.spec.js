@@ -35,7 +35,7 @@ describe('Users Endpoints', function() {
                     const newUser = {
                         email: 'testemail@sol.com',
                         password: '11AAaa!!',
-                        full_name: 'test full_name',
+                        full_name: 'testfull_name'
                     };
                     return supertest(app)
                         .post('/api/users')

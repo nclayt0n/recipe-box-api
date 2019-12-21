@@ -2,6 +2,30 @@ const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+function makeUsersArrayWithId() {
+    return [{
+            email: 'test-user-1@aol.com',
+            full_name: 'TU1',
+            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+        },
+        {
+            email: 'test-user-2@gm.com',
+            full_name: 'Test user 2',
+            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+        },
+        {
+            email: 'test-user-3@out.com',
+            full_name: 'Test user 3',
+            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+        },
+        {
+            email: 'test-user-4@out.com',
+            full_name: 'Test user 4',
+            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
+        },
+    ];
+}
+
 function makeUsersArray() {
     return [{
             email: 'test-user-1@aol.com',
@@ -26,8 +50,8 @@ function makeUsersArray() {
     ];
 }
 
-function makeRecipesArray(users, folders) {
-    return [{
+function makeRecipesArray() {
+    let recipes = [{
             "name": "Apple Pie",
             "folder_id": 1,
             "ingredients": '[{ name: "peach", quantity: 1, unit: "cup" }, { name: "sugar", quantity: 1, unit: "cup" }, { name: "crust", quantity: 1, unit: "package" }]',
@@ -67,6 +91,8 @@ function makeRecipesArray(users, folders) {
             user_id: 1,
         }
     ];
+    recipes.map(recipe => JSON.stringify(recipe.ingredients));
+    return recipes;
 }
 
 function makeFoldersArray(users) {
@@ -97,20 +123,18 @@ function makeFoldersArray(users) {
     ];
 }
 
-function makeExpectedRecipe(users, recipe, folders = []) {
-    const user = users
-        .find(user => user.id === recipe.user_id);
-
+function makeExpectedRecipe(users, recipe, folders) {
     return {
-        id: recipe.id,
+        id: 1,
         name: recipe.name,
         instructions: recipe.instuctions,
         date_created: recipe.date_created,
+        folder: folders[0].id,
         user: {
-            id: user.id,
-            email: user.email,
-            full_name: user.full_name,
-            date_created: user.date_created,
+            id: 1,
+            email: users[0].email,
+            full_name: users[0].full_name,
+            date_created: users[0].date_created,
         },
     };
 }
@@ -137,9 +161,9 @@ function makeExpectedFolder(users, folderId, folders) {
 }
 
 function makeRecipeFixtures() {
-    const testUsers = makeUsersArray();
+    const testUsers = makeUsersArrayWithId();
     const testFolders = makeFoldersArray(testUsers);
-    const testRecipes = makeRecipesArray(testUsers, testFolders).map(recipe => { JSON.stringify(recipe.ingredients); });
+    const testRecipes = makeRecipesArray().map(recipe => { JSON.stringify(recipe.ingredients) });
     return { testUsers, testRecipes, testFolders };
 }
 
@@ -210,4 +234,5 @@ module.exports = {
     seedRecipesTables,
     seedMaliciousRecipe,
     seedUsers,
+    makeUsersArrayWithId,
 };

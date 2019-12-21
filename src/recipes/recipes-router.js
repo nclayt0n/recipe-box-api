@@ -39,9 +39,9 @@ recipesRouter
 recipesRouter
     .route('/api/recipe/:recipe_id')
     .all(checkRecipeExists)
-    .get((req, res) => {
-        res.json(RecipesService.serializeRecipe(res.recipe));
-    })
+    // .get((req, res) => {
+    //     res.json(RecipesService.serializeRecipe(res.recipe));
+    // })
     .delete((req, res, next) => {
         RecipesService.deleteRecipe(req.app.get('db'), req.params.recipe_id)
             .then(numRowsAffected => {
