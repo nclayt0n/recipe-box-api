@@ -2,30 +2,6 @@ const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-function makeUsersArrayWithId() {
-    return [{
-            email: 'test-user-1@aol.com',
-            full_name: 'TU1',
-            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
-        },
-        {
-            email: 'test-user-2@gm.com',
-            full_name: 'Test user 2',
-            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
-        },
-        {
-            email: 'test-user-3@out.com',
-            full_name: 'Test user 3',
-            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
-        },
-        {
-            email: 'test-user-4@out.com',
-            full_name: 'Test user 4',
-            password: '$2a$12$3JY0O7bXmhkizMdVwBQd5uVVKNVi4TYTjClJyFgBs/ZJyNVoIzM76',
-        },
-    ];
-}
-
 function makeUsersArray() {
     return [{
             email: 'test-user-1@aol.com',
@@ -97,25 +73,21 @@ function makeRecipesArray() {
 
 function makeFoldersArray(users) {
     return [{
-            id: 1,
             name: 'First Folder',
             user_id: 1,
 
         },
         {
-            id: 2,
             name: 'Second Folder',
             user_id: 1,
 
         },
         {
-            id: 3,
             name: 'Third Folder',
             user_id: 1,
 
         },
         {
-            id: 4,
             name: 'Fourth Folder',
             user_id: 1,
 
@@ -139,7 +111,6 @@ function makeExpectedRecipe(users, recipe, folders) {
     };
 }
 
-
 function makeExpectedFolder(users, folderId, folders) {
     const expectedFolders = folders
         .filter(folder => folder.id === folderId);
@@ -161,7 +132,7 @@ function makeExpectedFolder(users, folderId, folders) {
 }
 
 function makeRecipeFixtures() {
-    const testUsers = makeUsersArrayWithId();
+    const testUsers = makeUsersArray();
     const testFolders = makeFoldersArray(testUsers);
     const testRecipes = makeRecipesArray().map(recipe => { JSON.stringify(recipe.ingredients) });
     return { testUsers, testRecipes, testFolders };
@@ -179,6 +150,16 @@ function cleanTables(db) {
 
 function seedFolders(db, folders) {
     return db.into('recipebox_folders').insert(folders);
+}
+
+function seedFoldersTable(db, users, folders) {
+    return db.transaction(async trx => {
+        await seedUsers(trx, users);
+        await trx.into('recipebox_folders').insert(folders);
+        // await trx.raw(
+        //     `SELECT setval('recipebox_recipes_id_seq',?)`, [recipes[recipes.length - 1].id]
+        // );
+    });
 }
 
 function seedUsers(db, users) {
@@ -205,15 +186,6 @@ function seedRecipesTables(db, users, recipes, folders) {
     });
 }
 
-function seedMaliciousRecipe(db, user, recipe) {
-    return seedUsers(db, [user])
-        .then(() =>
-            db
-            .into('recipebox_recipes')
-            .insert([recipe])
-        );
-}
-
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: 1 }, secret, {
         subject: user.email,
@@ -232,7 +204,7 @@ module.exports = {
     makeRecipeFixtures,
     cleanTables,
     seedRecipesTables,
-    seedMaliciousRecipe,
     seedUsers,
-    makeUsersArrayWithId,
+    seedFolders,
+    seedFoldersTable
 };

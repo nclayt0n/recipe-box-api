@@ -33,13 +33,13 @@ const FoldersService = {
                 'f.user_id',
                 'usr.id',
             )
-            .groupBy('f.id', 'usr.id')
+            .groupBy('f.id', 'usr.id');
     },
 
     getById(db, id) {
-        return FoldersService.getAllFolders(db)
+        return FoldersService.getAllFolders(db, id)
             .where('f.id', id)
-            .first()
+            .first();
     },
 
     serializeFolders(folders) {
@@ -74,7 +74,7 @@ const FoldersService = {
     updateFolder(db, id, newFolderFields) {
         return db('recipebox_folders').where({ id }).update(newFolderFields);
     },
-}
+};
 const recipefields = [
     'rb.id AS recipe:id',
     'rb.name AS recipe:name ',
@@ -86,13 +86,13 @@ const recipefields = [
     'rb.created_by AS recipes:created_by',
     'rb.note AS recipes:note',
     'rb.folder_id AS recipes:folder_id',
-]
+];
 const userFields = [
     'usr.id AS user:id',
     'usr.email AS user:email',
     'usr.full_name AS user:full_name',
     'usr.date_created AS user:date_created',
     'usr.date_modified AS user:date_modified',
-]
+];
 
 module.exports = FoldersService;

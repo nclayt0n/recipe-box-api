@@ -35,6 +35,7 @@ foldersRouter
     });
 foldersRouter
     .route('/api/folder/:folder_id')
+    .all(checkFolderExists)
     .get((req, res) => {
         res.json(FoldersService.serializeFolder(res.folder));
     })
@@ -67,7 +68,6 @@ async function checkFolderExists(req, res, next) {
             req.app.get('db'),
             req.params.folder_id
         );
-
         if (!folder) {
             return res.status(404).json({
                 error: `Folder doesn't exist`
