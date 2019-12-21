@@ -35,7 +35,6 @@ foldersRouter
     });
 foldersRouter
     .route('/api/folder/:folder_id')
-    .all(checkFolderExists)
     .get((req, res) => {
         res.json(FoldersService.serializeFolder(res.folder));
     })

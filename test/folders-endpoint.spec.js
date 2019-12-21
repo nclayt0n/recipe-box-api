@@ -63,15 +63,6 @@ describe('Folders Endpoints', () => {
         });
     });
     describe(`DELETE /api/folder/:folder_id`, () => {
-        context(`Given no recipes`, () => {
-            it(`responds with 404`, () => {
-                const folderId = 1;
-                return supertest(app)
-                    .delete(`/api/folder/${folderId}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                    .expect(404);
-            });
-        });
         context('Given there are folders in the database', () => {
             const testFolders = helpers.makeFoldersArray();
             beforeEach('insert folders', () =>
