@@ -24,7 +24,7 @@
         "express": "^4.17.1",
         "helmet": "^3.21.0",
         "jshint": "^2.10.3",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.0",
         "knex": "^0.20.1",
         "morgan": "^1.9.1",
         "pg": "^7.12.1",
